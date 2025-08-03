@@ -1,22 +1,28 @@
 {
   "expo": {
-    "name": "native-capp",
+    "name": "Meow Town",
     "slug": "native-capp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "nativecapp",
+    "icon": "./assets/images/pfp.png",
+    "scheme": "meowtown",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "assets/fonts/*",
+      "assets/images/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/pfp.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.meowtown"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +43,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b3805a7b-fca1-40cf-9878-99931ee708bf"
+      }
     }
   }
 }

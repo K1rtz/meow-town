@@ -1,29 +1,66 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import * as Font from 'expo-font';
+import { Slot, useRouter, useSegments } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { MenuProvider } from 'react-native-popup-menu';
 import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthContextProvider, useAuth } from '../context/authContext';
+import "../global.css";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+
+const MainLayout = () =>{
+  const {isAuthenticated} = useAuth();
+  const segments = useSegments();//array of all segments of current route
+  const router = useRouter();
+
+  useEffect(()=>{
+    if(typeof isAuthenticated == 'undefined') return
+    const inApp = segments[0] == '(app)';
+    if(isAuthenticated && !inApp){
+      //home
+      router.replace('/home');
+    }else if(isAuthenticated == false){
+      router.replace('/signIn')
+      //signin
+    }
+
+  },[isAuthenticated])
+
+  return <Slot />
+}
+
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'October Crow': require('../assets/fonts/OctoberCrow.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
   }
 
+
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <MenuProvider>
+      <AuthContextProvider>
+        <SafeAreaProvider>
+          <MainLayout />
+        </SafeAreaProvider>
+      </AuthContextProvider>
+    </MenuProvider>
   );
 }
