@@ -1,7 +1,7 @@
 import { db } from '@/firebaseConfig';
 import { formatFirestoreTimestamp, getRoomId } from '@/utils/common';
 import { Image } from 'expo-image';
-import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, doc, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -17,15 +17,16 @@ export default function ChatItem({item, router, noBorder, currentUser} : { item:
             let roomId = getRoomId(currentUser?.userId, item?.userId);
             const docRef = doc(db, "rooms", roomId)
             const messagesRef = collection(docRef, "messages")    
-            const q = query(messagesRef, orderBy('createdAt', 'desc'));
+            const q = query(messagesRef, orderBy('createdAt', 'desc'), limit(1));
             let unsub = onSnapshot(q, (snapshot)=>{
-                let allMessages = snapshot.docs.map(doc=>{
+                let lastMsg = snapshot.docs.map(doc=>{
                     return doc.data() as MessageType
                 })
-                setLastMessage(allMessages[0]? allMessages[0] : null)
+                setLastMessage(lastMsg[0]? lastMsg[0] : null)
             })
             return unsub
         },[])
+
         const showLastMessage = () =>{
             if(typeof lastMessage == 'undefined') return 'Loading...'
             if(lastMessage){
@@ -45,16 +46,24 @@ export default function ChatItem({item, router, noBorder, currentUser} : { item:
     const openChatRoom = ()=>{
         router.push({pathname:'/chatRoom', params: item});
     }
+
+    function capitalizeFirstLetter(str: string) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    
   return (
     <TouchableOpacity 
     onPress={openChatRoom}
     className={`flex-row justify-between items-center mx-4 gap-3 mb-4 pb-2 border-b ${noBorder ? undefined : 'border-b-red-950'}`}>
         <Image source={{uri: item?.profileURL || 'https://pfpideas.net/images/question-mark-profile-picture-ideas.jpg'}} 
-        style={{height: hp(6), aspectRatio: 1, borderRadius: 9999, borderWidth: 2, borderColor: '#112233'}} 
+        style={{height: hp(7.5), aspectRatio: 1, borderRadius: 9999,
+            backgroundColor: '#610606',  
+            borderWidth: 2, borderColor: '#910606'}} 
         className="rounded-full" />
-        <View className='flex-1 gap-1'>
+        <View className='flex-1 gap-5'>
             <View className='flex-row justify-between'>
-                <Text style = {{fontSize: hp(1.8)}} className='font-semibold text-red-700'>{item?.username}</Text>
+                <Text style = {{fontSize: hp(2)}} className='font-semibold text-red-700'>{capitalizeFirstLetter(item?.username)}</Text>
                 <Text style = {{fontSize: hp(1.8)}} className='font-semibold text-red-700'>{showTime()}</Text>
             </View>
             <Text style={{fontSize: hp(1.6)}} className='font-medium text-neutral-400'>{showLastMessage()}</Text>

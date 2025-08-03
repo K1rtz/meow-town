@@ -6,7 +6,7 @@ import { getRoomId } from '@/utils/common'
 import { Feather } from '@expo/vector-icons'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { addDoc, collection, doc, getDoc, onSnapshot, orderBy, query, setDoc, Timestamp } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, onSnapshot, orderBy, query, setDoc, Timestamp, updateDoc } from 'firebase/firestore'
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Keyboard, ScrollView, TextInput, TouchableOpacity, View } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
@@ -32,11 +32,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
             let roomId = getRoomId(user?.userId, item?.userId);
             const docRef = doc(db, "rooms", roomId)
             const messagesRef = collection(docRef, "messages")
-            // console.log("ROOM ID:", roomId);
 
             const q = query(messagesRef, orderBy('createdAt', 'asc'));
             let unsub = onSnapshot(q, (snapshot)=>{
-                // console.log('snapshot', snapshot)
                 let allMessages = snapshot.docs.map(doc=>{
                     return doc.data() as MessageType
                 })
@@ -54,6 +52,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
             
         },[])
+        
 
         useEffect(()=>{
             updateScrollView()
@@ -70,12 +69,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
         const handleSendMessage = async () =>{
             let message = textRef.current.trim()
             if(!message) return;
+
             try{
-                let roomId = getRoomId(user?.userId, item?.userId);
+                const roomId = getRoomId(user?.userId, item?.userId);
                 const docRef  = doc(db, 'rooms', roomId)
                 const messageRef = collection(docRef, "messages");
+
                 textRef.current = "";
                 if(inputRef) inputRef?.current?.clear();
+
                 const newDoc = await addDoc(messageRef,{
                     userId: user?.userId,
                     text: message,
@@ -83,7 +85,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
                     senderName: user?.username,
                     createdAt: Timestamp.fromDate(new Date())
                 })
-                // console.log('new message is created, id:', newDoc.id);
+                
+                await updateDoc(docRef,{
+                    lastMessageDate: Timestamp.fromDate(new Date())
+                })
                 updateScrollView()
             }catch(err: any){
                 Alert.alert('Message', err.message)
@@ -92,7 +97,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
         const createRoom = async () =>{
             if (!user?.userId || !item?.userId) {
-                // console.log("Missing userId or item.userId");
                 return;
             }
             let roomId = getRoomId(user.userId, item.userId);
@@ -103,11 +107,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
                 await setDoc(doc(db, "rooms", roomId), {
                     roomId,
+                    participants: [user.userId, item.userId],
+                    lastMessageDate: Timestamp.fromDate(new Date(0)),
                     createdAt: Timestamp.fromDate(new Date())
                 });
-                // console.log("Room created successfully");
             }else{
-                // console.log("Room alrady exists!")
             }
         } catch (error) {
             console.error("Error creating room:", error);

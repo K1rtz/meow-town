@@ -6,7 +6,7 @@ interface Props {
   messages: any[],
   currentUser: any,
   scrollViewRef: React.RefObject<ScrollView | null>
-}
+} 
 export default function MessageList( {messages, currentUser, scrollViewRef} : Props) {
   return (
       <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false}  keyboardShouldPersistTaps="handled">

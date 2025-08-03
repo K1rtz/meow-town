@@ -1,8 +1,11 @@
+import { MenuItem } from '@/components/CustomMenuItems';
 import { useAuth } from '@/context/authContext';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import {
   Menu,
   MenuOptions,
@@ -11,18 +14,7 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { blurhash } from '../utils/common.js';
-// import { MenuItem } from './CustomMenuItems.js';
-import { MenuItem } from '@/components/CustomMenuItems';
-import { AntDesign, Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
 
-const styles = StyleSheet.create({
-  image: {
-    width: 300,
-    height: 200,
-    borderRadius: 10,
-  },
-});
 
 const ios = Platform.OS=='ios';
 export default function HomeHeader() {
@@ -42,8 +34,8 @@ export default function HomeHeader() {
   }
 
   return (
-    <View style={{paddingTop: ios ? top : top + 10}} className='flex-row items-center justify-between px-5 bg-[#720e0e] pb-4 rounded-b-[10px] shadow' >
-      <Text style={{fontSize: hp(3.8), fontFamily: 'October Crow', fontWeight: '500', }} className='font-medium'> MEOW TOWN </Text>
+    <View style={{paddingTop: ios ? top : top + 10}} className='flex-row items-center justify-between px-5 bg-[#720e0e] pb-4 shadow' >
+      <Text style={{fontSize: hp(4), fontFamily: 'October Crow', fontWeight: '500', }} className='font-medium'> MEOW TOWN </Text>
       <View>
         <Menu>
         <MenuTrigger>
