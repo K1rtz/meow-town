@@ -5,7 +5,7 @@ It allows users to sign up, log in, chat in real-time, and manage their profile.
 ## Screenshots
 
 ### Sign Up & Login
-<img src="https://github.com/user-attachments/assets/b69792f2-67eb-46c8-b20f-b6e258ad76c3" width="800"/>
+<img src="https://github.com/user-attachments/assets/b69792f2-67eb-46c8-b20f-b6e258ad76c3" width="600"/>
 
 ### Homepage
 <img src="https://github.com/user-attachments/assets/37913a7d-f7cd-4ea8-a5a4-90b048fbff5e" width="800"/>
