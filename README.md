@@ -1,50 +1,18 @@
-# Welcome to your Expo app 👋
+# Meow Town
+**Meow Town** is a simple mobile chat application built with **React Native**, **Expo**, and **Firebase**.  
+It allows users to sign up, log in, chat in real-time, and manage their profile.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Screenshots
 
-## Get started
+### Sign Up & Login
+<img src="https://github.com/user-attachments/assets/b69792f2-67eb-46c8-b20f-b6e258ad76c3" width="800"/>
 
-1. Install dependencies
+### Homepage
+<img src="https://github.com/user-attachments/assets/37913a7d-f7cd-4ea8-a5a4-90b048fbff5e" width="800"/>
 
-   ```bash
-   npm install
-   ```
+### Profile
+<img src="https://github.com/user-attachments/assets/d187a8b4-2ac1-408d-91a3-965f2e94b102" width="800"/>
 
-2. Start the app
+### Chat Room
+<img src="https://github.com/user-attachments/assets/4c69db5a-2125-49bb-8f69-2998fe9d4fde" width="800"/>
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
